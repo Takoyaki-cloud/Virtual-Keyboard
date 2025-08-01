@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Commandes enregistrées</title>
+  <style>
+    body { font-family: Arial; margin: 30px; }
+    h1 { text-align: center; }
+    .command {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      padding: 12px;
+      background-color: #f0f0f0;
+      border-radius: 8px;
+    }
+    .options {
+      display: flex;
+      gap: 10px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      background-color: black;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Commandes enregistrées</h1>
+  <div class="command">
+    <span>Démarrage PC</span>
+    <div class="options">
+      <button><span title="Modifier">✏</span></button>
+      <button><span title="Voir">📄</span></button>
+      <button><span title="Supprimer">🗑</span></button>
+      <button><span title="Exécuter">▶</span></button>
+    </div>
+  </div>
+  <div id="commandsContainer">
+    <!-- Les commandes seront ajoutées ici dynamiquement -->
+  </div>
+
+  <script>
+    const commands = JSON.parse(localStorage.getItem('commands')) || []
+    const container = document.getElementById('commandsContainer')
+
+    commands.forEach((cmd, index) => {
+      const commandDiv = document.createElement('div');
+      commandDiv.className = 'command';
+      commandDiv.innerHTML = `
+        <span>${cmd.name}</span>
+        <div class="options">
+          <button onclick="editCommand(${index})"><span title="Modifier">✏</span></button>
+          <button onclick="viewCommand(${index})"><span title="Voir">📄</span></button>
+          <button onclick="deleteCommand(${index})"><span title="Supprimer">🗑</span></button>
+          <button onclick="executeCommand(${index})"><span title="Exécuter">▶</span></button>
+        </div>
+      `;
+      container.appendChild(commandDiv);
+    });
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Clavier à distance avec combinaisons</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin: 30px;
+    }
+
+    textarea {
+      width: 80%;
+      height: 100px;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .keyboard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .key, .combination-toggle {
+      padding: 10px 14px;
+      background-color: #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+      min-width: 40px;
+      text-align: center;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .key:hover, .combination-toggle:hover {
+      background-color: #bbb;
+    }
+
+    .combination-toggle.active {
+      background-color: #f59e0b;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Clavier à distance</h1>
+
+  <textarea id="textArea" placeholder="Tape ici pour envoyer du texte..."></textarea>
+
+  <div class="keyboard">
+
+    <div class="row">
+      <div class="combination-toggle" id="combinationToggle">🔗 Mode combinaison</div>
+    </div>
+
+    <div class="row">
+      <div class="key">Ctrl</div>
+      <div class="key">Alt</div>
+      <div class="key">Maj</div>
+      <div class="key">Win</div>
+      <div class="key">Entrée</div>
+      <div class="key">Tab</div>
+      <div class="key">Échap</div>
+      <div class="key">Power</div>
+      <div class="key">Suppr</div>
+    </div>
+
+    <div class="row">
+      <div class="key">←</div>
+      <div class="key">↑</div>
+      <div class="key">↓</div>
+      <div class="key">→</div>
+    </div>
+
+    <div class="row">
+      <div class="key">A</div>
+      <div class="key">Z</div>
+      <div class="key">E</div>
+      <div class="key">R</div>
+      <div class="key">T</div>
+      <div class="key">Y</div>
+      <div class="key">U</div>
+      <div class="key">I</div>
+      <div class="key">O</div>
+      <div class="key">P</div>
+      <div class="key">Q</div>
+      <div class="key">S</div>
+      <div class="key">D</div>
+      <div class="key">F</div>
+      <div class="key">G</div>
+      <div class="key">H</div>
+      <div class="key">J</div>
+      <div class="key">K</div>
+      <div class="key">L</div>
+      <div class="key">M</div>
+      <div class="key">W</div>
+      <div class="key">X</div>
+      <div class="key">C</div>
+      <div class="key">V</div>
+      <div class="key">B</div>
+      <div class="key">N</div>
+    </div>
+
+    <div class="row">
+      <div class="key">F1</div>
+      <div class="key">F2</div>
+      <div class="key">F3</div>
+      <div class="key">F4</div>
+      <div class="key">F5</div>
+      <div class="key">F6</div>
+      <div class="key">F7</div>
+      <div class="key">F8</div>
+      <div class="key">F9</div>
+      <div class="key">F10</div>
+      <div class="key">F11</div>
+      <div class="key">F12</div>
+    </div>
+
+  </div>
+
+  <script>
+    let combinationMode = false;
+    let currentCombination = [];
+
+    const toggleBtn = document.getElementById('combinationToggle');
+    const keys = document.querySelectorAll('.key');
+
+    toggleBtn.addEventListener('click', () => {
+      combinationMode = !combinationMode;
+      toggleBtn.classList.toggle('active');
+
+      if (!combinationMode && currentCombination.length > 0) {
+        console.log("💡 Combinaison envoyée :", currentCombination.join(" + "));
+        currentCombination = [];
+      }
+    });
+
+    keys.forEach(key => {
+      key.addEventListener('click', () => {
+        const keyValue = key.textContent.trim();
+
+        if (combinationMode) {
+          currentCombination.push(keyValue);
+          key.style.backgroundColor = "#86efac"; // vert clair
+          setTimeout(() => key.style.backgroundColor = "#ddd", 200);
+        } else {
+          console.log("🔹 Touche simple :", keyValue);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
