@@ -9,29 +9,25 @@
       text-align: center;
       margin: 30px;
     }
-
     textarea {
       width: 80%;
       height: 100px;
       font-size: 18px;
       margin-bottom: 20px;
     }
-
     .keyboard {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
     }
-
     .row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
     }
-
-    .key, .combination-toggle {
+    .key {
       padding: 10px 14px;
       background-color: #ddd;
       border-radius: 6px;
@@ -41,28 +37,27 @@
       font-size: 14px;
       user-select: none;
     }
-
-    .key:hover, .combination-toggle:hover {
+    .key:hover {
       background-color: #bbb;
     }
-
-    .combination-toggle.active {
-      background-color: #f59e0b;
-      color: white;
+    .key.selected {
+      background-color: #86efac; /* Vert clair */
+    }
+    .action-buttons {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <h1>Clavier à distance</h1>
-
   <textarea id="textArea" placeholder="Tape ici pour envoyer du texte..."></textarea>
-
   <div class="keyboard">
-
-    <div class="row">
-      <div class="combination-toggle" id="combinationToggle">🔗 Mode combinaison</div>
-    </div>
-
     <div class="row">
       <div class="key">Ctrl</div>
       <div class="key">Alt</div>
@@ -74,14 +69,12 @@
       <div class="key">Power</div>
       <div class="key">Suppr</div>
     </div>
-
     <div class="row">
       <div class="key">←</div>
       <div class="key">↑</div>
       <div class="key">↓</div>
       <div class="key">→</div>
     </div>
-
     <div class="row">
       <div class="key">A</div>
       <div class="key">Z</div>
@@ -110,7 +103,6 @@
       <div class="key">B</div>
       <div class="key">N</div>
     </div>
-
     <div class="row">
       <div class="key">F1</div>
       <div class="key">F2</div>
@@ -125,40 +117,44 @@
       <div class="key">F11</div>
       <div class="key">F12</div>
     </div>
-
   </div>
-
+  <div class="action-buttons">
+    <button id="sendSelection">Envoyer la sélection</button>
+    <button id="clearSelection">Retirer la sélection</button>
+  </div>
   <script>
-    let combinationMode = false;
     let currentCombination = [];
-
-    const toggleBtn = document.getElementById('combinationToggle');
     const keys = document.querySelectorAll('.key');
-
-    toggleBtn.addEventListener('click', () => {
-      combinationMode = !combinationMode;
-      toggleBtn.classList.toggle('active');
-
-      if (!combinationMode && currentCombination.length > 0) {
-        console.log("💡 Combinaison envoyée :", currentCombination.join(" + "));
-        currentCombination = [];
-      }
-    });
+    const sendSelectionBtn = document.getElementById('sendSelection');
+    const clearSelectionBtn = document.getElementById('clearSelection');
 
     keys.forEach(key => {
       key.addEventListener('click', () => {
         const keyValue = key.textContent.trim();
-
-        if (combinationMode) {
+        if (!currentCombination.includes(keyValue)) {
           currentCombination.push(keyValue);
-          key.style.backgroundColor = "#86efac"; // vert clair
-          setTimeout(() => key.style.backgroundColor = "#ddd", 200);
-        } else {
-          console.log("🔹 Touche simple :", keyValue);
+          key.classList.add('selected');
         }
       });
     });
-  </script>
 
+    sendSelectionBtn.addEventListener('click', () => {
+      if (currentCombination.length > 0) {
+        alert("Combinaison envoyée : " + currentCombination.join(" + "));
+      } else {
+        alert("Aucune touche sélectionnée.");
+      }
+    });
+
+    clearSelectionBtn.addEventListener('click', () => {
+      currentCombination.forEach(keyValue => {
+        const key = Array.from(keys).find(k => k.textContent.trim() === keyValue);
+        if (key) {
+          key.classList.remove('selected');
+        }
+      });
+      currentCombination = [];
+    });
+  </script>
 </body>
 </html>
