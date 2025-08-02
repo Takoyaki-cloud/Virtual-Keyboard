@@ -57,6 +57,9 @@
 <body>
   <h1>Clavier à distance</h1>
   <textarea id="textArea" placeholder="Tape ici pour envoyer du texte..."></textarea>
+  <div>
+    <button id="sendText">Envoyer le texte</button>
+  </div>
   <div class="keyboard">
     <div class="row">
       <div class="key">Ctrl</div>
@@ -127,6 +130,8 @@
     const keys = document.querySelectorAll('.key');
     const sendSelectionBtn = document.getElementById('sendSelection');
     const clearSelectionBtn = document.getElementById('clearSelection');
+    const sendTextBtn = document.getElementById('sendText');
+    const textArea = document.getElementById('textArea');
 
     keys.forEach(key => {
       key.addEventListener('click', () => {
@@ -154,6 +159,15 @@
         }
       });
       currentCombination = [];
+    });
+
+    sendTextBtn.addEventListener('click', () => {
+      const text = textArea.value;
+      if (text.trim() !== "") {
+        alert("Texte envoyé : " + text);
+      } else {
+        alert("Aucun texte à envoyer.");
+      }
     });
   </script>
 </body>
